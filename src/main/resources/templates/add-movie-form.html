@@ -5,10 +5,23 @@
     <title>Ajout d'un film</title>
 </head>
 <body>
-    <form th:action="@{/movie}" method="POST" th:object="${movie}">
-        <p>Title<input type="text" th:field="*{title}"/></p>
-        <p>Genre<input type="text" th:field="*{genre}"/></p>
-        <p>Description<input type="text" th:field="*{description}"/></p>
+    <form th:action="@{/movie}" method="POST" th:object="${movieForm}">
+        <p>Title<input type="text" th:field="*{title}"></p>
+        <div th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+        <p>Genre<input>
+            <select th:field="*{genre}">
+                <option th:value="COMEDIE" th:text="Comédie"></option>
+                <option th:value="HORREUR" th:text="Horreur"></option>
+                <option th:value="THRILLER" th:text="Thriller"></option>
+                <option th:value="ACTION" th:text="Action"></option>
+                <option th:value="ROMANTIQUE" th:text="Romantique"></option>
+                <option th:value="DRAME" th:text="Drame"></option>
+                <option th:value="ANIMATION" th:text="Animation"></option>
+            </select>
+        </p>
+        <div th:if="${#fields.hasErrors('genre')}" th:errors="*{genre}"></div>
+        <p>Description<input type="textarea" th:field="*{description}"></p>
+        <div th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
         <input type="submit" value="OK"/>
     </form>
 </body>
