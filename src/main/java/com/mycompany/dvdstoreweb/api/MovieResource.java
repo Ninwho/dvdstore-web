@@ -1,4 +1,4 @@
-package com.mycompany.dvdstoreweb.controller;
+package com.mycompany.dvdstoreweb.api;
 
 import com.mycompany.dvdstore.entity.Movie;
 import com.mycompany.dvdstore.service.MovieServiceInterface;
@@ -10,10 +10,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/movie")
-public class MovieController {
+public class MovieResource {
 
     @Autowired
     private MovieServiceInterface movieService;
@@ -26,24 +27,20 @@ public class MovieController {
         this.movieService = movieService;
     }
 
-    /*@GetMapping("/{id}")
-    public String displayMovieCard(@PathVariable("id") long id, Model model) {
-        System.out.println("La méthode displayMovieCard a été invoquée.");
-        model.addAttribute("movie",movieService.getMovieById(id));
-        return "movie-details";
-    }*/
+    @GetMapping
+    public List<Movie> list() {
+        return movieService.getMovieList();
+    }
 
-    @PostMapping("/add")
-    public String addMovie(@Valid @ModelAttribute MovieForm movieForm, BindingResult results) {
-        if(results.hasErrors()) {
-            return "add-movie-form";
-        }
-        Movie movie = new Movie();
-        movie.setTitle(movieForm.getTitle());
-        movie.setGenre(movieForm.getGenre());
-        movie.setDescription(movieForm.getDescription());
-        movieService.registerMovie(movie);
-        return "movie-added";
+    @GetMapping("/{id}")
+    public Movie get(@PathVariable("id") long id) {
+        System.out.println("La méthode displayMovieCard a été invoquée.");
+        return movieService.getMovieById(id);
+    }
+
+    @PostMapping
+    public Movie add(@RequestBody Movie movie) {
+        return movieService.registerMovie(movie);
     }
 
 }
